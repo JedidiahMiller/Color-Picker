@@ -12,6 +12,7 @@ body {
     border: 0.5em white solid;
     box-shadow: 0 0 1em black;
     border-radius: 0.5em;
+    left: 200px;
 }
 
 .overlay {
