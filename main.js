@@ -1,12 +1,13 @@
 
 // Settings
 const hueColorLayout = [[255, 0, 0], [255, 255, 0], [0, 255, 0], [0, 255, 255], [0, 0, 255], [255, 0, 255], [255, 0, 0]];
+// saturationLightnessSelector and huePercent create the default color (BaseColor and currentColor are set based on them on start)
 
 // Globals
 var colorSquareIsDragging = false;
 var baseColor = {"r": 255, "g":0, "b":0};
 var currentColor = {"r": 0, "g":0, "b":0};
-var saturationLightnessSelectorPercents = {"x": 1, "y": 1}
+var saturationLightnessSelectorPercents = {"x": 0.9, "y": 0.1}
 var huePercent = 0;
 
 
@@ -21,27 +22,41 @@ window.onload = () => {
 
     // Big color box thing
     const detailSelector = new Slider(saturationLightnessBox, saturationLightnessSelector, "3d", (x, y, box, slider)=> {
+        // Set current color
         currentColor = calculateEdits(baseColor, x, y);
+        // Save settings to global
         saturationLightnessSelectorPercents["x"] = x;
         saturationLightnessSelectorPercents["y"] = y;
+        // Change color of selector
         saturationLightnessSelector.style.background = `rgb(${currentColor["r"]}, ${currentColor["g"]}, ${currentColor["b"]})`;
     });
+    // Set start location
+    saturationLightnessSelector.style.left = `${(saturationLightnessSelectorPercents["x"] * saturationLightnessBox.clientWidth) - (saturationLightnessSelector.clientWidth / 2)}px`;
+    saturationLightnessSelector.style.top = `${(saturationLightnessSelectorPercents["y"] * saturationLightnessBox.clientHeight) - (saturationLightnessSelector.clientHeight / 2)}px`;
+    
 
     // Hue selector
     const hueSelector = new Slider(hueBox, hueSlider, "x", (x, y, box, slider) => {
+        // Save hue to global
         huePercent = x;
+        // Generate RGB from percentage
         baseColor = baseColorFromRange(x);
+        // Set current color based on new base color
         currentColor = calculateEdits(baseColor, saturationLightnessSelectorPercents["x"], saturationLightnessSelectorPercents["y"]);
 
         saturationLightnessSelector.style.background = `rgb(${currentColor["r"]}, ${currentColor["g"]}, ${currentColor["b"]})`;
         baseColorBox.style.background = `rgb(${baseColor["r"]}, ${baseColor["g"]}, ${baseColor["b"]})`;
         slider.style.background = `rgb(${baseColor["r"]}, ${baseColor["g"]}, ${baseColor["b"]})`;
     });
+    // Set start location
+    hueSlider.style.left = `${(huePercent * hueBox.clientWidth) - (hueSlider.clientWidth / 2)}px`;
 
-    // Prep Scene
+    // Prep Scene colors
+    baseColor = baseColorFromRange(huePercent);
     currentColor = calculateEdits(baseColor, saturationLightnessSelectorPercents["x"], saturationLightnessSelectorPercents["y"]);
     baseColorBox.style.background = `rgb(${baseColor["r"]}, ${baseColor["g"]}, ${baseColor["b"]})`;
     saturationLightnessSelector.style.background = `rgb(${currentColor["r"]}, ${currentColor["g"]}, ${currentColor["b"]})`;
+    hueSlider.style.background = `rgb(${baseColor["r"]}, ${baseColor["g"]}, ${baseColor["b"]})`;
 
 }
 
