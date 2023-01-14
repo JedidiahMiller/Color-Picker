@@ -18,6 +18,7 @@ window.onload = () => {
     const saturationLightnessSelector = document.getElementById("colorSelector");
     const hueBox = document.getElementById("hueBar");
     const hueSlider = document.getElementById("hueSelector");
+    const rgbValue = document.getElementById("rgbValues");
 
     // Big color box thing
     const detailSelector = new Slider(saturationLightnessBox, saturationLightnessSelector, "3d", (x, y, box, slider)=> {
@@ -28,6 +29,10 @@ window.onload = () => {
         saturationLightnessSelectorPercents["y"] = y;
         // Change color of selector
         saturationLightnessSelector.style.background = `rgb(${currentColor["r"]}, ${currentColor["g"]}, ${currentColor["b"]})`;
+        // Background
+        document.body.style.background = `rgb(${currentColor["r"]}, ${currentColor["g"]}, ${currentColor["b"]})`;
+        rgbValue.innerText = `rgb(${Math.round(currentColor["r"])}, ${Math.round(currentColor["g"])}, ${Math.round(currentColor["b"])})`;
+
     });
     // Set start location
     detailSelector.setSliderPosition(saturationLightnessSelectorPercents["x"], saturationLightnessSelectorPercents["y"]);
@@ -42,8 +47,11 @@ window.onload = () => {
         currentColor = calculateEdits(baseColor, saturationLightnessSelectorPercents["x"], saturationLightnessSelectorPercents["y"]);
 
         saturationLightnessSelector.style.background = `rgb(${currentColor["r"]}, ${currentColor["g"]}, ${currentColor["b"]})`;
+        document.body.style.background = `rgb(${currentColor["r"]}, ${currentColor["g"]}, ${currentColor["b"]})`;
         baseColorBox.style.background = `rgb(${baseColor["r"]}, ${baseColor["g"]}, ${baseColor["b"]})`;
         slider.style.background = `rgb(${baseColor["r"]}, ${baseColor["g"]}, ${baseColor["b"]})`;
+        rgbValue.innerText = `rgb(${Math.round(currentColor["r"])}, ${Math.round(currentColor["g"])}, ${Math.round(currentColor["b"])})`;
+
     });
     // Set start location
     hueSelector.setSliderPosition(huePercent);
@@ -51,6 +59,9 @@ window.onload = () => {
     // Prep Scene colors
     baseColor = baseColorFromRange(huePercent);
     currentColor = calculateEdits(baseColor, saturationLightnessSelectorPercents["x"], saturationLightnessSelectorPercents["y"]);
+
+    rgbValue.innerText = `rgb(${Math.round(currentColor["r"])}, ${Math.round(currentColor["g"])}, ${Math.round(currentColor["b"])})`;
+    document.body.style.background = `rgb(${currentColor["r"]}, ${currentColor["g"]}, ${currentColor["b"]})`;
     baseColorBox.style.background = `rgb(${baseColor["r"]}, ${baseColor["g"]}, ${baseColor["b"]})`;
     saturationLightnessSelector.style.background = `rgb(${currentColor["r"]}, ${currentColor["g"]}, ${currentColor["b"]})`;
     hueSlider.style.background = `rgb(${baseColor["r"]}, ${baseColor["g"]}, ${baseColor["b"]})`;
@@ -174,5 +185,17 @@ function baseColorFromRange(percent, layout=hueColorLayout) {
 
     // Convert final to dict and return
     return {"r": final[0], "g": final[1], "b": final[2]};
+
+}
+
+function invertColor(color) {
+
+    final = {"r": 0, "g": 0, "b": 0};
+
+    final["r"] = 255 - color["r"];
+    final["g"] = 255 - color["g"];
+    final["b"] = 255 - color["b"];
+
+    return final;
 
 }
