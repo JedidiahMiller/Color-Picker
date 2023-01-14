@@ -10,7 +10,6 @@ var currentColor = {"r": 0, "g":0, "b":0};
 var saturationLightnessSelectorPercents = {"x": 0.9, "y": 0.1}
 var huePercent = 0;
 
-
 window.onload = () => {
 
     // Elements
@@ -31,9 +30,7 @@ window.onload = () => {
         saturationLightnessSelector.style.background = `rgb(${currentColor["r"]}, ${currentColor["g"]}, ${currentColor["b"]})`;
     });
     // Set start location
-    saturationLightnessSelector.style.left = `${(saturationLightnessSelectorPercents["x"] * saturationLightnessBox.clientWidth) - (saturationLightnessSelector.clientWidth / 2)}px`;
-    saturationLightnessSelector.style.top = `${(saturationLightnessSelectorPercents["y"] * saturationLightnessBox.clientHeight) - (saturationLightnessSelector.clientHeight / 2)}px`;
-    
+    detailSelector.setSliderPosition(saturationLightnessSelectorPercents["x"], saturationLightnessSelectorPercents["y"]);
 
     // Hue selector
     const hueSelector = new Slider(hueBox, hueSlider, "x", (x, y, box, slider) => {
@@ -49,7 +46,7 @@ window.onload = () => {
         slider.style.background = `rgb(${baseColor["r"]}, ${baseColor["g"]}, ${baseColor["b"]})`;
     });
     // Set start location
-    hueSlider.style.left = `${(huePercent * hueBox.clientWidth) - (hueSlider.clientWidth / 2)}px`;
+    hueSelector.setSliderPosition(huePercent);
 
     // Prep Scene colors
     baseColor = baseColorFromRange(huePercent);
@@ -110,12 +107,8 @@ class Slider {
                 y = 0;
             }
     
-            if (this.slideType === "x" || this.slideType === "3d") {
-                this.slider.style.left = `${(x * this.box.clientWidth) - (this.slider.clientWidth / 2)}px`;
-            }
-            if ((this.slideType === "y" || this.slideType === "3d")) {
-                this.slider.style.top = `${(y * this.box.clientHeight) - (this.slider.clientHeight / 2)}px`;
-            }
+            this.setSliderPosition(x, y);
+
             if (this.slideType && this.actionOnMove) {
                 this.actionOnMove(x, y, this.box, this.slider);
             }
@@ -123,6 +116,14 @@ class Slider {
         }
     }
 
+    setSliderPosition(x, y) {
+        if (this.slideType === "x" || this.slideType === "3d") {
+            this.slider.style.left = `${x * (this.box.clientWidth - this.slider.offsetWidth)}px`;
+        }
+        if ((this.slideType === "y" || this.slideType === "3d")) {
+            this.slider.style.top = `${y * (this.box.clientHeight - this.slider.offsetHeight)}px`;
+        }
+    }
 }
 
 function calculateEdits(base, xPercent, yPercent) {
