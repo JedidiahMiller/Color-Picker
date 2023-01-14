@@ -2,13 +2,23 @@
 
 body {
     box-sizing: border-box;
+    background-color: darkblue;
 }
 
+.selectorBox {
+    position: relative;
+}
+
+.selector {
+    position: absolute;
+    box-sizing: border-box;
+}
+
+ /* Main color box */
 
 #colorSquare {
     width: 300px;
     height: 300px;
-    position: relative;
     border: 0.5em white solid;
     box-shadow: 0 0 1em black;
     border-radius: 0.5em;
@@ -24,7 +34,7 @@ body {
 }
 
 #baseColor {
-    background: red;
+    background: rgb(255, 0, 0);
 }
 
 #whiteOverlay {
@@ -36,14 +46,12 @@ body {
 }
 
 #colorSelector {
-    position: absolute;
     width: 8%;
     height: 8%;
     background-color: greenyellow;
     border: 0.1em white solid;
     box-shadow: 0 0 0.2em black;
     border-radius: 20%;
-    box-sizing: border-box;
 }
 
 /* Hue selector */
@@ -51,12 +59,15 @@ body {
 #hueBar {
     width: 300px;
     height: 50px;
-    background: linear-gradient(to right, rgb(255, 0, 0), rgb(255, 255, 0), rgb(0, 255, 0), rgb(0, 255, 255), rgb(0, 0, 255), rgb(255, 0, 255));
+    background: linear-gradient(to right, rgb(255, 0, 0), rgb(255, 255, 0), rgb(0, 255, 0), rgb(0, 255, 255), rgb(0, 0, 255), rgb(255, 0, 255), rgb(255, 0, 0));
+    border-radius: 5px;
 }
 
 #hueSelector {
-    height: 110%;
+    height: 100%;
     width: 5%;
     background-color: white;
     border: 2px solid black;
+    border-radius: 5px;
+    box-shadow: 0 0 0.2em black;
 }
