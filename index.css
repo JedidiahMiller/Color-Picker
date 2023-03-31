@@ -20,6 +20,7 @@ body {
 #rgbValues {
     color: white;
     text-shadow: 0 0 1em black;
+    z-index: 1;
 }
 
 #page {
